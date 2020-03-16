@@ -1,0 +1,17 @@
+provider "aws" {
+  region     = "us-east-1"
+  access_key = "AKIA27H3WW75EKS2YLIV"
+  secret_key = "hMdt01e3d3Us3A3fPKjuFt4pFE2I6Mx2+YWm1+dY"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-2757f631"
+  instance_type = "t2.micro"
+}
+resource "aws_eip" "ip" {
+    vpc = true
+    instance = aws_instance.example.id
+    provisioner "local-exec" {
+      command = "echo ${aws_instance.example.public_ip} > name.txt"
+  }
+}
